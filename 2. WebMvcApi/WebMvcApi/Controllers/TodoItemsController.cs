@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using _2._WebMvcApi.Models;
+using WebMvcApi.Models;
 
-namespace _2._WebMvcApi.Controllers
+namespace WebMvcApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

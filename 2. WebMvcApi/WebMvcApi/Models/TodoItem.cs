@@ -1,4 +1,4 @@
-﻿namespace _2._WebMvcApi.Models {
+﻿namespace WebMvcApi.Models {
     public class TodoItem {
         public long Id { get; set; }
         public string? Name { get; set; }
