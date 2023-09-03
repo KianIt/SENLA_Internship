@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SENLA_Internship {
     internal class Program {
         static void Main(string[] args) {
-            (new Backpack()).Run();
+            (new CollectionsCompairing()).Run();
             Console.ReadKey();
         }
     }
