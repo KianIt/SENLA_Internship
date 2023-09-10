@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebMvcApi.Interfaces;
+
 using WebMvcApi.Models;
+using WebMvcApi.Repositories;
 
 namespace WebMvcApi.Controllers
 {
@@ -23,25 +19,23 @@ namespace WebMvcApi.Controllers
 
         // GET: api/TodoItems
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems() {
-            if (_repository.CheckNull())
-                return NotFound();
-            
-            return await _repository.GetItemsAsync();
+        public async Task<IEnumerable<TodoItem>> GetTodoItems() {
+            return await Task.Factory.StartNew<IEnumerable<TodoItem>>(
+                () => _repository.GetItems()
+                );
         }
 
         // GET: api/TodoItems/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoItem?>> GetTodoItem(long id) {
-            if (_repository.CheckNull())
-                return NotFound();
-   
-            var todoItem = await _repository.GetItemAsync(id);
+            var itemResult = await Task.Factory.StartNew<ActionResult<TodoItem?>>(
+                () => _repository.GetItem(id)
+                );
 
-            if (todoItem.Value == null)
-                return NotFound();
+            if (itemResult.Value != null)
+                return itemResult;
 
-            return todoItem;
+            return NotFound();
         }
 
         // PUT: api/TodoItems/5
@@ -50,29 +44,36 @@ namespace WebMvcApi.Controllers
             if (id != item.Id)
                 return BadRequest();
 
-            _repository.Update(item);
+            await Task.Factory.StartNew(
+                () => _repository.Update(item)
+                );
 
             try {
-                await _repository.SaveAsync();
+                await Task.Factory.StartNew(
+                () => _repository.Save()
+                );
             }
             catch (DbUpdateConcurrencyException) {
-                if (_repository.GetItemAsync(id).Result == null)
+                var itemFound = await Task.Factory.StartNew<TodoItem?>(
+                    () => _repository.GetItem(id)
+                    );
+                if (itemFound == null)
                     return NotFound();
                 else
                     throw;
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/TodoItems
         [HttpPost]
         public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem item) {
-            if (_repository.CheckNull())
-                return Problem("Entity set 'TodoRepository.TodoContext.TodoItems' is null.");
-
             _repository.Add(item);
-            await _repository.SaveAsync();
+
+            await Task.Factory.StartNew(
+                () => _repository.Save()
+                );
 
             return CreatedAtAction("GetTodoItem", new { id = item.Id }, item);
         }
@@ -80,17 +81,22 @@ namespace WebMvcApi.Controllers
         // DELETE: api/TodoItems/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodoItem(long id) {
-            if (_repository.CheckNull())
+            var itemFound = await Task.Factory.StartNew<TodoItem?>(
+                    () => _repository.GetItem(id)
+                    );
+
+            if (itemFound == null)
                 return NotFound();
 
-            var item = await _repository.GetItemAsync(id);
-            if (item.Value == null)
-                return NotFound();
+            await Task.Factory.StartNew(
+                    () => _repository.Delete(id)
+                    );
+            
+            await Task.Factory.StartNew(
+                    () => _repository.Save()
+                    );
 
-            _repository.Delete(id);
-            await _repository.SaveAsync();
-
-            return NoContent();
+            return Ok();
         }
     }
 }

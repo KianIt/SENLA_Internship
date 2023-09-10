@@ -1,11 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace WebMvcApi.Models {
+using WebMvcApi.Models;
+
+namespace WebMvcApi.DBContext {
+    // Context of memory-in database for TodoItems
     public class TodoContext : DbContext {
         public TodoContext(DbContextOptions<TodoContext> options) : 
             base (options) {}
 
-        // Automatically filled set of items
         public DbSet<TodoItem> TodoItems { get; set; } = null!;
     }
 }
