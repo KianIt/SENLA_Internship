@@ -8,8 +8,7 @@ namespace WebMvcApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TodoItemsController : ControllerBase
-    {
+    public class TodoItemsController : ControllerBase {
         private readonly IRepository<TodoItem> _repository;
 
         // Dependecy injection of repository
@@ -91,7 +90,7 @@ namespace WebMvcApi.Controllers
             await Task.Factory.StartNew(
                     () => _repository.Delete(id)
                     );
-            
+
             await Task.Factory.StartNew(
                     () => _repository.Save()
                     );

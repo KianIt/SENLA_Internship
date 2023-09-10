@@ -2,7 +2,7 @@
 
 using WebMvcApi.Models;
 
-namespace WebMvcApi.DBContext {
+namespace WebMvcApi.DBContexts {
     // Context of memory-in database for TodoItems
     public class TodoContext : DbContext {
         public TodoContext(DbContextOptions<TodoContext> options) : 

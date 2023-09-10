@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using WebMvcApi.Models;
-using WebMvcApi.DBContext;
+using WebMvcApi.DBContexts;
 
 namespace WebMvcApi.Repositories {
     // Repository pattern implementation
