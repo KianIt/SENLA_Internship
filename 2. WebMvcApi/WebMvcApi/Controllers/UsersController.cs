@@ -45,5 +45,15 @@ namespace WebMvcApi.Controllers {
             return Ok();
         }
 
+        [HttpDelete("id")]
+        public async Task<IActionResult> DeleteUser(int id) {
+            var deleteUserCommand = new DeleteUserCommand(id);
+            await _mediator.Send(deleteUserCommand);
+
+            var saveCommand = new SaveUserCommand();
+            await _mediator.Send(saveCommand);
+
+            return Ok();
+        }
     }
 }
