@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 
+using MediatR;
+
 using WebMvcApi.Models;
 using WebMvcApi.DBContexts;
 using WebMvcApi.Repositories;
-using WebMvcApi.Mediators;
-using WebMvcApi.Mediators.Handlers;
 
 // Builder
 var builder = WebApplication.CreateBuilder(args);
@@ -16,13 +16,12 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase("TodoList"));
 builder.Services.AddDbContext<UserContext>(opt => opt.UseInMemoryDatabase("UserList"));
 
+// MediatR
+builder.Services.AddMediatR(opt => opt.RegisterServicesFromAssemblyContaining<Program>());
+
 // Dependencies injection
 builder.Services.AddTransient<IRepository<TodoItem>, TodoRepository>();
-builder.Services.AddTransient<IMediator, UserMediator>();
-builder.Services.AddScoped<GetUsersHandler>();
-builder.Services.AddScoped<GetUserHandler>();
-builder.Services.AddScoped<AddUserHandler>();
-
+builder.Services.AddTransient<IRepository<User>, UserRepository>();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();

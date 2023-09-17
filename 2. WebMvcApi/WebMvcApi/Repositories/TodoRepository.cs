@@ -5,45 +5,37 @@ using WebMvcApi.DBContexts;
 
 namespace WebMvcApi.Repositories {
     // Repository pattern implementation
-    public class TodoRepository : IRepository<TodoItem> {
+    public class TodoRepository : AbstractRepository<TodoItem> {
         private readonly TodoContext _context;
 
         public TodoRepository(TodoContext context) {
             _context = context;
         }
 
-        public IEnumerable<TodoItem> GetItems() {
+        public override IEnumerable<TodoItem> GetItems() {
             return _context.TodoItems.ToList();
         }
 
-        public TodoItem? GetItem(long id) {
+        public override TodoItem? GetItem(int id) {
             return _context.TodoItems.Find(id); ;
         }
 
-        public void Add(TodoItem item) {
+        public override void Add(TodoItem item) {
             _context.Add(item);
         }
 
-        public void Update(TodoItem item) {
+        public override void Update(TodoItem item) {
             _context.Entry(item).State = EntityState.Modified;
         }
 
-        public void Delete(long id) {
+        public override void Delete(int id) {
             var item = GetItem(id);
             if (item != null)
                 _context.TodoItems.Remove(item);
         }
 
-        public void Save() {
+        public override void Save() {
             _context.SaveChangesAsync();
-        }
-
-        private bool disposed = false;
-        public void Dispose() {
-            if (!disposed) {
-                _context.Dispose();
-            }
-            disposed = true;
         }
     }
 }

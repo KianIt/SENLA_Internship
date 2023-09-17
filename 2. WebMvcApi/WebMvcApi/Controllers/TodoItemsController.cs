@@ -19,19 +19,15 @@ namespace WebMvcApi.Controllers
         // GET: api/TodoItems
         [HttpGet]
         public async Task<IEnumerable<TodoItem>> GetTodoItems() {
-            return await Task.Factory.StartNew<IEnumerable<TodoItem>>(
-                () => _repository.GetItems()
-                );
+            return await _repository.GetItemsAsync();
         }
 
         // GET: api/TodoItems/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TodoItem?>> GetTodoItem(long id) {
-            var itemResult = await Task.Factory.StartNew<ActionResult<TodoItem?>>(
-                () => _repository.GetItem(id)
-                );
+        public async Task<ActionResult<TodoItem?>> GetTodoItem(int id) {
+            var itemResult = await _repository.GetItemAsync(id);
 
-            if (itemResult.Value != null)
+            if (itemResult != null)
                 return itemResult;
 
             return NotFound();
@@ -39,23 +35,17 @@ namespace WebMvcApi.Controllers
 
         // PUT: api/TodoItems/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTodoItem(long id, TodoItem item) {
+        public async Task<IActionResult> PutTodoItem(int id, TodoItem item) {
             if (id != item.Id)
                 return BadRequest();
 
-            await Task.Factory.StartNew(
-                () => _repository.Update(item)
-                );
+            await _repository.UpdateAsync(item);
 
             try {
-                await Task.Factory.StartNew(
-                () => _repository.Save()
-                );
+                await _repository.SaveAsync();
             }
             catch (DbUpdateConcurrencyException) {
-                var itemFound = await Task.Factory.StartNew<TodoItem?>(
-                    () => _repository.GetItem(id)
-                    );
+                var itemFound = _repository.GetItemAsync(id);
                 if (itemFound == null)
                     return NotFound();
                 else
@@ -70,30 +60,22 @@ namespace WebMvcApi.Controllers
         public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem item) {
             _repository.Add(item);
 
-            await Task.Factory.StartNew(
-                () => _repository.Save()
-                );
+            await _repository.SaveAsync();
 
             return CreatedAtAction("GetTodoItem", new { id = item.Id }, item);
         }
 
         // DELETE: api/TodoItems/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTodoItem(long id) {
-            var itemFound = await Task.Factory.StartNew<TodoItem?>(
-                    () => _repository.GetItem(id)
-                    );
+        public async Task<IActionResult> DeleteTodoItem(int id) {
+            var itemFound = await _repository.GetItemAsync(id);
 
             if (itemFound == null)
                 return NotFound();
 
-            await Task.Factory.StartNew(
-                    () => _repository.Delete(id)
-                    );
+            await _repository.DeleteAsync(id);
 
-            await Task.Factory.StartNew(
-                    () => _repository.Save()
-                    );
+            await _repository.SaveAsync();
 
             return Ok();
         }

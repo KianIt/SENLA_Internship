@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
+using MediatR;
+
 using WebMvcApi.Models;
-using WebMvcApi.Mediators;
-using WebMvcApi.Mediators.Requests;
-using WebMvcApi.Mediators.Response;
+using WebMvcApi.Contracts.Requests;
+using WebMvcApi.Contracts.Commands;
 
 namespace WebMvcApi.Controllers {
     [Route("api/[controller]")]
@@ -17,24 +18,29 @@ namespace WebMvcApi.Controllers {
 
         [HttpGet]
         public async Task<IEnumerable<User>> GetUsers() {
-            var response = await _mediator.SendAsync(new GetUsersRequest());
-
-            return ((UserResponse<List<User>>) response).Value;
+            var getUsersRequest = new GetUsersRequest();
+            var response = await _mediator.Send(getUsersRequest);
+            return response;
         }
 
         [HttpGet("id")]
         public async Task<ActionResult<User?>> GetUser(int id) {
-            var response = await _mediator.SendAsync(new GetUserRequest(id));
+            var getUserByIdRequest = new GetUserByIdRequest(id);
+            var response = await _mediator.Send(getUserByIdRequest);
 
-            if (((UserResponse<User?>) response).Value == null)
+            if (response == null)
                 return NotFound();
 
-            return ((UserResponse<User?>) response).Value;
+            return response;
         }
 
         [HttpPost]
         public async Task<IActionResult> AddUser(User user) {
-            await _mediator.SendAsync(new AddUserRequest(user));
+            var addUserCommand = new AddUserCommand(user);
+            await _mediator.Send(addUserCommand);
+
+            var saveCommand = new SaveUserCommand();
+            await _mediator.Send(saveCommand);
 
             return Ok();
         }
