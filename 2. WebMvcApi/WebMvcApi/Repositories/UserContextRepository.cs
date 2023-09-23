@@ -4,10 +4,10 @@ using WebMvcApi.Models;
 using WebMvcApi.DBContexts;
 
 namespace WebMvcApi.Repositories {
-    public class UserRepository : AbstractRepository<User> {
+    public class UserContextRepository : AbstractRepository<User> {
         private readonly UserContext _context;
 
-        public UserRepository(UserContext context) {
+        public UserContextRepository(UserContext context) {
             _context = context;
         }
 

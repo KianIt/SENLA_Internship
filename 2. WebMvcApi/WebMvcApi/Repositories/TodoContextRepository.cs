@@ -4,11 +4,9 @@ using WebMvcApi.Models;
 using WebMvcApi.DBContexts;
 
 namespace WebMvcApi.Repositories {
-    // Repository pattern implementation
-    public class TodoRepository : AbstractRepository<TodoItem> {
-        private readonly TodoContext _context;
-
-        public TodoRepository(TodoContext context) {
+    public class TodoContextRepository : AbstractRepository<TodoItem> {
+        TodoContext _context { get; set; }
+        public TodoContextRepository(TodoContext context) {
             _context = context;
         }
 

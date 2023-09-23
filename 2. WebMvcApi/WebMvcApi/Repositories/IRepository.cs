@@ -1,5 +1,4 @@
 ﻿namespace WebMvcApi.Repositories {
-    // Repository pattern interface
     public interface IRepository<T>
         where T : class {
 
