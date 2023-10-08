@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Battleship", "Battleship\Battleship.csproj", "{A8B37B97-F1B1-45AA-9F50-FB9976F2654E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipGUI", "BattleshipGUI\BattleshipGUI.csproj", "{7B7C2BA0-DD09-48AE-9BF1-B8D048196725}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A8B37B97-F1B1-45AA-9F50-FB9976F2654E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8B37B97-F1B1-45AA-9F50-FB9976F2654E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8B37B97-F1B1-45AA-9F50-FB9976F2654E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8B37B97-F1B1-45AA-9F50-FB9976F2654E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B7C2BA0-DD09-48AE-9BF1-B8D048196725}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B7C2BA0-DD09-48AE-9BF1-B8D048196725}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B7C2BA0-DD09-48AE-9BF1-B8D048196725}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B7C2BA0-DD09-48AE-9BF1-B8D048196725}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7DFEE8E1-97AA-46EE-8EC5-CEA98B570BB2}
+	EndGlobalSection
+EndGlobal
